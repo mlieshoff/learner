@@ -16,10 +16,17 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class Engine {
+    private final EngineListener engineListener;
+
     //locale -> group -> key -> value
     private Map<Locale, Map<String, Map<String, String>>> model = new HashMap<Locale, Map<String, Map<String, String>>>();
 
     private Locale from;
+    private RoundObject roundObject;
+
+    public Engine(EngineListener engineListener) {
+        this.engineListener = engineListener;
+    }
 
     public List<Locale> getLanguages() throws IOException {
         String data = FileUtils.readFully(getClass().getClassLoader().getResourceAsStream("languages.txt"));
@@ -79,23 +86,13 @@ public class Engine {
         return entry;
     }
 
-    public static void main(String[] args) {
-        Engine engine = new Engine();
-        try {
-            List<Locale> locales = engine.getLanguages();
-            engine.init(locales.get(0), locales.get(1));
-            String group = engine.pickGroup();
-            System.out.println(engine.initRound());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void init(Locale from, Locale to) throws IOException {
+    public void start(Locale from, Locale to) throws IOException {
         this.from = from;
         model.clear();
         getQuestionsFile(from, to);
+        initRound();
+        engineListener.onStart();
+        engineListener.onNewRound(roundObject);
     }
 
     public RoundObject initRound() {
@@ -103,7 +100,7 @@ public class Engine {
         String question = pickQuestion(group);
         String correctAnswer = getAnswerFor(group, question);
         List<String> answers = pickAnswersFor(group, question);
-        RoundObject roundObject = new RoundObject(question, correctAnswer, answers);
+        roundObject = new RoundObject(question, correctAnswer, answers);
         return roundObject;
     }
 
@@ -144,8 +141,13 @@ public class Engine {
         return (int) (Math.random() * max);
     }
 
-    public boolean check(RoundObject roundObject, String text) {
-        return roundObject.getCorrectAnswer().equals(text);
+    public void answer(String text) {
+        if (roundObject.getCorrectAnswer().equals(text)) {
+            engineListener.onRightAnswer();
+            engineListener.onNewRound(initRound());
+        } else {
+            engineListener.onWrongAnswer();
+        }
     }
 
     private class Entry {

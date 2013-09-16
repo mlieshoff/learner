@@ -15,13 +15,14 @@ import java.util.Locale;
  * Time: 15:41
  * To change this template use File | Settings | File Templates.
  */
-public class SwingClient {
-    private Engine engine = new Engine();
+public class SwingClient implements EngineListener {
+    private Engine engine;
     private JFrame frame;
     private StartPanel startPanel;
     private GamePanel gamePanel;
 
     private SwingClient() throws IOException {
+        engine = new Engine(this);
         startPanel = new StartPanel();
         gamePanel = new GamePanel();
         frame = new JFrame("Learner");
@@ -32,12 +33,27 @@ public class SwingClient {
         frame.add(BorderLayout.CENTER, startPanel);
     }
 
-    private void start(Locale from, Locale to) throws IOException {
-        engine.init(from, to);
-        gamePanel.nextRound(engine.initRound());
+    @Override
+    public void onStart() {
         frame.remove(startPanel);
         frame.add(BorderLayout.CENTER, gamePanel);
         frame.revalidate();
+    }
+
+    @Override
+    public void onNewRound(RoundObject roundObject) {
+        gamePanel.updateRound(roundObject);
+    }
+
+    @Override
+    public void onRightAnswer() {
+        JOptionPane.showConfirmDialog(frame, "Winning!");
+    }
+
+    @Override
+    public void onWrongAnswer() {
+        JOptionPane.showConfirmDialog(frame, "Loosing!");
+        onStart();
     }
 
     private class StartPanel extends JPanel {
@@ -66,7 +82,7 @@ public class SwingClient {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        start((Locale) from.getSelectedItem(), (Locale) to.getSelectedItem());
+                        engine.start((Locale) from.getSelectedItem(), (Locale) to.getSelectedItem());
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -81,36 +97,28 @@ public class SwingClient {
     private class GamePanel extends JPanel {
         private JLabel question = new JLabel();
         private java.util.List<JButton> buttons = new ArrayList<JButton>();
-        private RoundObject _roundObject;
 
         private GamePanel() {
             setLayout(new BorderLayout());
-
             add(BorderLayout.NORTH, question);
-
             JPanel buttonsPanel = new JPanel(new GridLayout(2, 2));
-
             for (int i = 0; i < 4; i ++) {
                 final JButton button = new JButton();
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (engine.check(_roundObject, button.getText())) {
-                            gamePanel.nextRound(engine.initRound());
-                        }
+                        engine.answer(button.getText());
                     }
                 });
                 buttons.add(button);
                 buttonsPanel.add(button);
             }
-
             add(BorderLayout.SOUTH, buttonsPanel);
         }
 
-        public void nextRound(RoundObject roundObject) {
-            _roundObject = roundObject;
-            question.setText(_roundObject.getQuestion());
-            java.util.List<String> answers = _roundObject.getAnswers();
+        private void updateRound(RoundObject roundObject) {
+            question.setText(roundObject.getQuestion());
+            java.util.List<String> answers = roundObject.getAnswers();
             for (int i = 0, n = buttons.size(); i < n; i ++) {
                 JButton button = buttons.get(i);
                 button.setText(answers.get(i));
