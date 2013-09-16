@@ -2,11 +2,11 @@ package org.mili.learner.system;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,13 +19,7 @@ public class Engine {
     //locale -> group -> key -> value
     private Map<Locale, Map<String, Map<String, String>>> model = new HashMap<Locale, Map<String, Map<String, String>>>();
 
-    public Set<String> getGroups(Locale locale) {
-        return model.get(locale).keySet();
-    }
-
-    public Set<String> getKeysForGroup(Locale locale, String group) {
-        return model.get(locale).get(group).keySet();
-    }
+    private Locale from;
 
     public List<Locale> getLanguages() throws IOException {
         String data = FileUtils.readFully(getClass().getClassLoader().getResourceAsStream("languages.txt"));
@@ -89,12 +83,69 @@ public class Engine {
         Engine engine = new Engine();
         try {
             List<Locale> locales = engine.getLanguages();
-            System.out.println(engine.getQuestionsFile(locales.get(0), locales.get(1)));
-            System.out.println(engine.getGroups(locales.get(0)));
-            System.out.println(engine.getKeysForGroup(locales.get(0), "chars"));
+            engine.init(locales.get(0), locales.get(1));
+            String group = engine.pickGroup();
+            System.out.println(engine.initRound());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void init(Locale from, Locale to) throws IOException {
+        this.from = from;
+        model.clear();
+        getQuestionsFile(from, to);
+    }
+
+    public RoundObject initRound() {
+        String group = pickGroup();
+        String question = pickQuestion(group);
+        String correctAnswer = getAnswerFor(group, question);
+        List<String> answers = pickAnswersFor(group, question);
+        RoundObject roundObject = new RoundObject(question, correctAnswer, answers);
+        return roundObject;
+    }
+
+    private List<String> pickAnswersFor(String group, String question) {
+        Map<String, String> questions = model.get(from).get(group);
+        String correctAnswer = questions.get(question);
+
+        List<String> answers = new ArrayList<String>(questions.values());
+        answers.remove(correctAnswer);
+        Collections.shuffle(answers);
+
+        List<String> result = new ArrayList<String>();
+        result.add(correctAnswer);
+        result.addAll(answers.subList(0, 3));
+
+        Collections.shuffle(result);
+
+        return result;
+    }
+
+    private String getAnswerFor(String group, String question) {
+        return model.get(from).get(group).get(question);
+    }
+
+    private String pickQuestion(String group) {
+        return pickRandom(new ArrayList<String>(model.get(from).get(group).keySet()));
+    }
+
+    private String pickGroup() {
+        return pickRandom(new ArrayList<String>(model.get(from).keySet()));
+    }
+
+    private String pickRandom(List<String> list) {
+        return list.get(getNumber(list.size() - 1));
+    }
+
+    private int getNumber(int max) {
+        return (int) (Math.random() * max);
+    }
+
+    public boolean check(RoundObject roundObject, String text) {
+        return roundObject.getCorrectAnswer().equals(text);
     }
 
     private class Entry {
