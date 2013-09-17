@@ -47,13 +47,12 @@ public class SwingClient implements EngineListener {
 
     @Override
     public void onRightAnswer() {
-        JOptionPane.showConfirmDialog(frame, "Winning!");
+        gamePanel.onWin();
     }
 
     @Override
     public void onWrongAnswer() {
-        JOptionPane.showConfirmDialog(frame, "Loosing!");
-        onStart();
+        gamePanel.onLoose();
     }
 
     private class StartPanel extends JPanel {
@@ -98,9 +97,14 @@ public class SwingClient implements EngineListener {
         private JLabel question = new JLabel();
         private java.util.List<JButton> buttons = new ArrayList<JButton>();
 
+        private Font font = new Font("Verdana", Font.BOLD, 24);
+
         private GamePanel() {
+            question.setForeground(Color.BLACK);
+            question.setFont(font);
+            question.setHorizontalAlignment(JLabel.CENTER);
             setLayout(new BorderLayout());
-            add(BorderLayout.NORTH, question);
+            add(BorderLayout.CENTER, question);
             JPanel buttonsPanel = new JPanel(new GridLayout(2, 2));
             for (int i = 0; i < 4; i ++) {
                 final JButton button = new JButton();
@@ -117,11 +121,30 @@ public class SwingClient implements EngineListener {
         }
 
         private void updateRound(RoundObject roundObject) {
+            question.setForeground(Color.BLACK);
             question.setText(roundObject.getQuestion());
             java.util.List<String> answers = roundObject.getAnswers();
             for (int i = 0, n = buttons.size(); i < n; i ++) {
                 JButton button = buttons.get(i);
                 button.setText(answers.get(i));
+            }
+        }
+
+        private void onWin() {
+            question.setForeground(Color.GREEN);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void onLoose() {
+            question.setForeground(Color.RED);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

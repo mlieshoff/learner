@@ -1,6 +1,7 @@
 package org.mili.learner.system;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 public class Engine {
     private final EngineListener engineListener;
-
+    private Statistics _statistics;
     //locale -> group -> key -> value
     private Map<Locale, Map<String, Map<String, String>>> model = new HashMap<Locale, Map<String, Map<String, String>>>();
 
@@ -44,7 +45,11 @@ public class Engine {
 
     public String getQuestionsFile(Locale from, Locale to) throws IOException {
         String filename = String.format("%s_%s.txt", from.getLanguage(), to.getLanguage());
-        String data = FileUtils.readFully(getClass().getClassLoader().getResourceAsStream(filename));
+        InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
+        if (is == null) {
+            return getQuestionsFile(to, from);
+        }
+        String data = FileUtils.readFully(is);
         String[] lines = data.split("\n");
         for (String line : lines) {
             if (line != null && line.length() > 0 && !line.startsWith("#")) {
@@ -93,6 +98,7 @@ public class Engine {
         initRound();
         engineListener.onStart();
         engineListener.onNewRound(roundObject);
+        _statistics.roundStart();
     }
 
     public RoundObject initRound() {
@@ -145,8 +151,11 @@ public class Engine {
         if (roundObject.getCorrectAnswer().equals(text)) {
             engineListener.onRightAnswer();
             engineListener.onNewRound(initRound());
+            _statistics.roundEnd();
+            _statistics.roundStart();
         } else {
             engineListener.onWrongAnswer();
+            _statistics.fail();
         }
     }
 
