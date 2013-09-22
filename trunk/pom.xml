@@ -8,7 +8,8 @@
 	<name>Learning Application</name>
 
 	<modules>
-        <module>system</module>
+            <module>learner-system</module>
+            <module>learner-android</module>
 	</modules>
 
 	<url>www.xxx.de</url>

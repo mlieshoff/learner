@@ -22,7 +22,8 @@ public class SwingClient implements EngineListener {
     private GamePanel gamePanel;
 
     private SwingClient() throws IOException {
-        engine = new Engine(this);
+        engine = new Engine();
+        engine.setEngineListener(this);
         startPanel = new StartPanel();
         gamePanel = new GamePanel();
         frame = new JFrame("Learner");
@@ -34,7 +35,7 @@ public class SwingClient implements EngineListener {
     }
 
     @Override
-    public void onStart() {
+    public void onGameStart() {
         frame.remove(startPanel);
         frame.add(BorderLayout.CENTER, gamePanel);
         frame.revalidate();
@@ -57,31 +58,19 @@ public class SwingClient implements EngineListener {
 
     private class StartPanel extends JPanel {
         private StartPanel() throws IOException {
-            java.util.List<Locale> list = engine.getLanguages();
-            Locale[] locales = new Locale[list.size()];
+            java.util.List<String> list = engine.getLanguages();
+            String[] locales = new String[list.size()];
             for (int i = 0, n = list.size(); i < n; i ++) {
                 locales[i] = list.get(i);
             }
-            final JComboBox<Locale> from = new JComboBox<Locale>(locales);
-            from.setRenderer(new ListCellRenderer<Locale>() {
-                @Override
-                public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index, boolean isSelected, boolean cellHasFocus) {
-                    return new JLabel(value.getDisplayLanguage());
-                }
-            });
-            final JComboBox<Locale> to = new JComboBox<Locale>(locales);
-            to.setRenderer(new ListCellRenderer<Locale>() {
-                @Override
-                public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index, boolean isSelected, boolean cellHasFocus) {
-                    return new JLabel(value.getDisplayLanguage());
-                }
-            });
+            final JComboBox<String> from = new JComboBox<String>(locales);
+            final JComboBox<String> to = new JComboBox<String>(locales);
             JButton startButton = new JButton("Start");
             startButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        engine.start((Locale) from.getSelectedItem(), (Locale) to.getSelectedItem());
+                        engine.start((String) from.getSelectedItem(), (String) to.getSelectedItem());
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
