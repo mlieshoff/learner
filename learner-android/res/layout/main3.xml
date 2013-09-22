@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <TextView
+            android:id="@+id/textFieldNumberOfRightAnswers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="18dp"
+            android:gravity="left"
+            />
+
+    <TextView
+            android:id="@+id/textField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:text=" of "
+            android:layout_toRightOf="@id/textFieldNumberOfRightAnswers"
+            />
+
+    <TextView
+            android:id="@+id/textFieldNumberOfTotalAnswers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="18dp"
+            android:gravity="right"
+            android:layout_toRightOf="@id/textField"
+            />
+
+    <TextView
+            android:id="@+id/textFieldAvgRoundTimeInSeconds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avg round time:"
+            android:textSize="18dp"
+            android:layout_below="@id/textFieldNumberOfRightAnswers"
+            />
+
+    <TextView
+            android:id="@+id/avgRoundTimeInSeconds"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="18dp"
+            android:gravity="right"
+            android:layout_below="@id/textFieldNumberOfRightAnswers"
+            android:layout_toRightOf="@id/textFieldAvgRoundTimeInSeconds"
+            />
+
+    <Button
+            android:id="@+id/buttonTryAgain"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Try again"
+            android:layout_below="@id/textFieldAvgRoundTimeInSeconds"
+            />
+
+</RelativeLayout>

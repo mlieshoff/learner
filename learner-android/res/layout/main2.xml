@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <TextView
+            android:id="@+id/question"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:text="A"
+            android:textSize="96dp"
+            android:gravity="center"
+            />
+
+    <Button
+            android:id="@+id/buttonA"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="A"
+            android:layout_below="@id/question"
+            />
+
+    <Button
+            android:id="@+id/buttonB"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:layout_below="@id/question"
+            android:layout_toRightOf="@id/buttonA"
+            />
+
+    <Button
+            android:id="@+id/buttonC"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="C"
+            android:layout_below="@id/buttonB"
+            />
+
+    <Button
+            android:id="@+id/buttonD"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:text="D"
+            android:layout_below="@id/buttonB"
+            android:layout_toRightOf="@id/buttonC"
+            />
+
+    <Button
+            android:id="@+id/buttonFinish"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="Finish"
+            android:layout_below="@id/buttonC"
+            />
+
+</RelativeLayout>
