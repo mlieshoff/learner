@@ -1,0 +1,139 @@
+chars.Alif (isolated)=ا
+chars.Alif (end)=ـا
+chars.Alif (middle)=ـا
+chars.Alif (begin)=ا
+
+chars.Bā (isolated)=ب
+chars.Bā (end)=ـب
+chars.Bā (middle)=ـبـ
+chars.Bā (begin)=بـ
+
+chars.Tā (isolated)=ت
+chars.Tā (end)=ـت
+chars.Tā (middle)=ـتـ
+chars.Tā (begin)=تـ
+
+chars.Thā (isolated)=ث
+chars.Thā (end)=ـث
+chars.Thā (middle)=ـثـ
+chars.Thā (begin)=ثـ
+
+chars.Dschīm (isolated)=ج
+chars.Dschīm (end)=ـج
+chars.Dschīm (middle)=ـجـ
+chars.Dschīm (begin)=جـ
+
+chars.Hā (isolated)=ح
+chars.Hā (end)=ـح
+chars.Hā (middle)=ـحـ
+chars.Hā (begin)=حـ
+
+chars.Chā (isolated)=خ
+chars.Chā (end)=ـخ
+chars.Chā (middle)=ـخـ
+chars.Chā (begin)=خـ
+
+chars.Dāl (isolated)=د
+chars.Dāl (end)=ـد
+chars.Dāl (middle)=ـد
+chars.Dāl (begin)=د
+
+chars.Dhāl (isolated)=ذ
+chars.Dhāl (end)=ـذ
+chars.Dhāl (middle)=ـذ
+chars.Dhāl (begin)=ذ
+
+chars.Rā (isolated)=ر
+chars.Rā (end)=ـر
+chars.Rā (middle)=ـر
+chars.Rā (begin)=ر
+
+chars.Zāin (isolated)=ز
+chars.Zāin (end)=ـز
+chars.Zāin (middle)=ـز
+chars.Zāin (begin)=ز
+
+chars.Sīn (isolated)=س
+chars.Sīn (end)=ـس
+chars.Sīn (middle)=ـسـ
+chars.Sīn (begin)=سـ
+
+chars.Schīn (isolated)=ش
+chars.Schīn (end)=ـش
+chars.Schīn (middle)=ـشـ
+chars.Schīn (begin)=شـ
+
+chars.Sād (isolated)=ص
+chars.Sād (end)=ـص
+chars.Sād (middle)=ـصـ
+chars.Sād (begin)=صـ
+
+chars.Dād (isolated)=ض
+chars.Dād (end)=ـض
+chars.Dād (middle)=ـضـ
+chars.Dād (begin)=ضـ
+
+chars.Tā (isolated)=ط
+chars.Tā (end)=ـط
+chars.Tā (middle)=ـطـ
+chars.Tā (begin)=طـ
+
+chars.Zā (isolated)=ظ
+chars.Zā (end)=ـظ
+chars.Zā (middle)=ـظـ
+chars.Zā (begin)=ظـ
+
+chars.Ain (isolated)=ع
+chars.Ain (end)=ـع
+chars.Ain (middle)=ـعـ
+chars.Ain (begin)=عـ
+
+chars.Ghain (isolated)=غ
+chars.Ghain (end)=ـغ
+chars.Ghain (middle)=ـغـ
+chars.Ghain (begin)=غـ
+
+chars.Fā (isolated)=ف
+chars.Fā (end)=ـف
+chars.Fā (middle)=ـفـ
+chars.Fā (begin)=فـ
+
+chars.Qaf (isolated)=ق
+chars.Qaf (end)=ـق
+chars.Qaf (middle)=ـقـ
+chars.Qaf (begin)=قـ
+
+chars.Kāf (isolated)=ك
+chars.Kāf (end)=ـك
+chars.Kāf (middle)=ـكـ
+chars.Kāf (begin)=كـ
+
+chars.Lām (isolated)=ل
+chars.Lām (end)=ـل
+chars.Lām (middle)=ـلـ
+chars.Lām (begin)=لـ
+
+chars.Mīm (isolated)=م
+chars.Mīm (end)=ـم
+chars.Mīm (middle)=ـمـ
+chars.Mīm (begin)=مـ
+
+chars.Nūn (isolated)=ن
+chars.Nūn (end)=ـن
+chars.Nūn (middle)=ـنـ
+chars.Nūn (begin)=نـ
+
+chars.Hā (isolated)=ه
+chars.Hā (end)=ـه
+chars.Hā (middle)=ـهـ
+chars.Hā (begin)=هـ
+
+chars.Wāw (isolated)=و
+chars.Wāw (end)=ـو
+chars.Wāw (middle)=ـو
+chars.Wāw (begin)=و
+
+chars.Yā (isolated)=ي
+chars.Yā (end)=ـي
+chars.Yā (middle)=ـيـ
+chars.Yā (begin)=يـ
