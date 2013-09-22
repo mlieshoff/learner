@@ -12,7 +12,7 @@ public interface EngineListener {
 
     void onWrongAnswer();
 
-    void onStart();
+    void onGameStart();
 
     void onNewRound(RoundObject roundObject);
 }

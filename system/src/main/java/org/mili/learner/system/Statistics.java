@@ -1,5 +1,7 @@
 package org.mili.learner.system;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: micha
@@ -7,34 +9,43 @@ package org.mili.learner.system;
  * Time: 10:08
  * To change this template use File | Settings | File Templates.
  */
-public class Statistics {
+public class Statistics implements Serializable {
 
     private long totalTime;
     private long roundTime;
-    private int rounds;
-    private int fails;
+    private int numberOfTotalAnswers;
+    private int numberOfRightAnswers;
 
-    public void fail() {
-        fails ++;
+    public void right() {
+        numberOfRightAnswers ++;
     }
 
     public void roundStart() {
-        roundTime = System.currentTimeMillis();
+        roundTime -= System.currentTimeMillis();
     }
 
     public void roundEnd() {
-        roundTime -= System.currentTimeMillis();
+        roundTime += System.currentTimeMillis();
         totalTime += roundTime;
-        rounds ++;
+        numberOfTotalAnswers ++;
     }
 
-    @Override
-    public String toString() {
-        return "Statistics{" +
-                "totalTime=" + totalTime +
-                ", roundTime=" + roundTime +
-                ", rounds=" + rounds +
-                ", fails=" + fails +
-                '}';
+    public int getNumberOfTotalAnswers() {
+        return numberOfTotalAnswers;
+    }
+
+    public int getNumberOfRightAnswers() {
+        return numberOfRightAnswers;
+    }
+
+    public long getTotalTime() {
+        return totalTime;
+    }
+
+    public int getAvgRoundTime() {
+        if (numberOfTotalAnswers == 0) {
+            return 0;
+        }
+        return (int) ((totalTime / numberOfTotalAnswers) / 1000);
     }
 }

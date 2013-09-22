@@ -2,6 +2,7 @@ package org.mili.learner.system;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,34 +18,35 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class Engine {
-    private final EngineListener engineListener;
-    private Statistics _statistics;
+    private EngineListener engineListener;
+    private Statistics _statistics = new Statistics();
     //locale -> group -> key -> value
-    private Map<Locale, Map<String, Map<String, String>>> model = new HashMap<Locale, Map<String, Map<String, String>>>();
+    private Map<String, Map<String, Map<String, String>>> model = new HashMap<String, Map<String, Map<String, String>>>();
 
-    private Locale from;
+    private String from;
     private RoundObject roundObject;
 
-    public Engine(EngineListener engineListener) {
+    public void setEngineListener(EngineListener engineListener) {
         this.engineListener = engineListener;
     }
 
-    public List<Locale> getLanguages() throws IOException {
-        String data = FileUtils.readFully(getClass().getClassLoader().getResourceAsStream("languages.txt"));
+    public static List<String> getLanguages() throws IOException {
+        String data = FileUtils.readFully(Engine.class.getClassLoader().getResourceAsStream("languages.txt"));
         String[] lines = data.split("\n");
-        List<Locale> locales = new ArrayList<Locale>();
+
+        List<String> locales = new ArrayList<String>();
         for (String line : lines) {
             if (line != null && line.length() > 0 && !line.startsWith("#")) {
                 String[] array = line.split("_");
-                locales.add(Locale.forLanguageTag(array[0]));
-                locales.add(Locale.forLanguageTag(array[1]));
+                locales.add(array[0]);
+                locales.add(array[1]);
             }
         }
         return locales;
     }
 
-    public String getQuestionsFile(Locale from, Locale to) throws IOException {
-        String filename = String.format("%s_%s.txt", from.getLanguage(), to.getLanguage());
+    public String getQuestionsFile(String from, String to) throws IOException {
+        String filename = String.format("%s_%s.txt", from, to);
         InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
         if (is == null) {
             return getQuestionsFile(to, from);
@@ -91,12 +93,12 @@ public class Engine {
         return entry;
     }
 
-    public void start(Locale from, Locale to) throws IOException {
+    public void start(String from, String to) throws IOException {
         this.from = from;
         model.clear();
         getQuestionsFile(from, to);
         initRound();
-        engineListener.onStart();
+        engineListener.onGameStart();
         engineListener.onNewRound(roundObject);
         _statistics.roundStart();
     }
@@ -153,16 +155,21 @@ public class Engine {
             engineListener.onNewRound(initRound());
             _statistics.roundEnd();
             _statistics.roundStart();
+            _statistics.right();
         } else {
+            _statistics.roundEnd();
             engineListener.onWrongAnswer();
-            _statistics.fail();
         }
+    }
+
+    public Statistics getStatistics() {
+        return _statistics;
     }
 
     private class Entry {
         private String value;
         private String group;
         private String key;
-        private Locale locale;
+        private String locale;
     }
 }
